@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VIA — Sneaker Concept Survey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --bg-card: #141414;
+      --text: #f2f2f2;
+      --muted: #8a8a8a;
+      --border: #2a2a2a;
+      --accent: #c9a84c;
+      --white: #fff;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    header {
+      padding: 1.2rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      letter-spacing: 0.2em;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .back {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+    }
+    .back:hover { color: var(--text); }
+
+    main {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+    .label {
+      font-size: 0.68rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.7rem;
+    }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.85rem;
+      font-weight: 500;
+      margin-bottom: 0.8rem;
+    }
+    .intro {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-bottom: 2.2rem;
+      font-weight: 300;
+      line-height: 1.65;
+    }
+
+    .q {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem 1.3rem;
+      margin-bottom: 1.1rem;
+    }
+    .q h2 {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 0.35rem;
+      line-height: 1.4;
+    }
+    .q .hint {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .opt {
+      display: block;
+      padding: 0.7rem 0.95rem;
+      margin: 0.4rem 0;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.88rem;
+      color: var(--muted);
+      transition: border-color 0.2s, background 0.2s, color 0.2s;
+    }
+    .opt:hover {
+      border-color: #444;
+      color: var(--text);
+    }
+    .opt.selected {
+      border-color: var(--accent);
+      background: rgba(201, 168, 76, 0.08);
+      color: var(--text);
+    }
+    .opt input { display: none; }
+
+    textarea, input[type="text"] {
+      width: 100%;
+      background: #0e0e0e;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.8rem 1rem;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.9rem;
+      resize: vertical;
+      min-height: 80px;
+      margin-top: 0.4rem;
+    }
+    textarea:focus, input[type="text"]:focus {
+      outline: none;
+      border-color: #555;
+    }
+    input[type="text"] { min-height: auto; }
+
+    .actions {
+      display: flex;
+      gap: 0.8rem;
+      margin-top: 1.8rem;
+      flex-wrap: wrap;
+    }
+    button {
+      font-family: inherit;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.9rem 1.6rem;
+      border-radius: 4px;
+      cursor: pointer;
+      border: none;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    button:active { transform: scale(0.98); }
+    .btn-primary {
+      background: var(--white);
+      color: var(--bg);
+    }
+    .btn-primary:hover { opacity: 0.9; }
+
+    #results {
+      display: none;
+      margin-top: 2rem;
+    }
+    #results .thanks {
+      text-align: center;
+      padding: 1.4rem 1rem;
+      margin-bottom: 1.8rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    #results .thanks strong {
+      display: block;
+      font-size: 1.15rem;
+      margin-bottom: 0.4rem;
+      color: var(--accent);
+    }
+    #results h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.45rem;
+      margin-bottom: 0.4rem;
+    }
+    #results .sub {
+      color: var(--muted);
+      font-size: 0.88rem;
+      margin-bottom: 1.6rem;
+    }
+    .stat-block {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem 1.15rem;
+      margin-bottom: 1rem;
+    }
+    .stat-block h3 {
+      font-size: 0.88rem;
+      font-weight: 500;
+      margin-bottom: 0.85rem;
+      color: var(--muted);
+    }
+    .bar-row {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      margin: 0.4rem 0;
+      font-size: 0.82rem;
+    }
+    .bar-label {
+      min-width: 140px;
+      color: var(--text);
+      font-size: 0.8rem;
+    }
+    .bar-track {
+      flex: 1;
+      height: 6px;
+      background: #222;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 3px;
+      width: 0;
+      transition: width 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .bar-pct {
+      min-width: 36px;
+      text-align: right;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+    .insight {
+      margin-top: 1.5rem;
+      padding: 1.2rem;
+      border-left: 3px solid var(--accent);
+      background: rgba(201, 168, 76, 0.06);
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+    .insight strong { color: var(--text); }
+    .hide-form { display: none !important; }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="logo">VIA</a>
+    <a href="index.html" class="back">← Back to site</a>
+  </header>
+
+  <main>
+    <div id="formSection">
+      <div class="label">Student project survey</div>
+      <h1>VIA — Sneaker Concept Survey</h1>
+      <p class="intro">
+        We are a group of students working on a new sneaker brand concept called <strong style="color:#ccc">VIA</strong> (from Latin — way).
+        Each pair is dedicated to a city, made in limited edition, and 20% of the purchase goes to an environmental project in that city.
+        We'd love to know what you think!
+      </p>
+
+      <form id="surveyForm">
+        <div class="q">
+          <h2>1. How old are you?</h2>
+          <label class="opt"><input type="radio" name="age" value="Under 18"> Under 18</label>
+          <label class="opt"><input type="radio" name="age" value="18–24"> 18–24</label>
+          <label class="opt"><input type="radio" name="age" value="25–34"> 25–34</label>
+          <label class="opt"><input type="radio" name="age" value="35+"> 35+</label>
+        </div>
+
+        <div class="q">
+          <h2>2. How often do you buy sneakers?</h2>
+          <label class="opt"><input type="radio" name="freq" value="Several times a year"> Several times a year</label>
+          <label class="opt"><input type="radio" name="freq" value="Once a year"> Once a year</label>
+          <label class="opt"><input type="radio" name="freq" value="Rarely"> Rarely</label>
+          <label class="opt"><input type="radio" name="freq" value="Never"> Never</label>
+        </div>
+
+        <div class="q">
+          <h2>3. What matters most to you when choosing sneakers?</h2>
+          <p class="hint">Choose up to 3</p>
+          <label class="opt"><input type="checkbox" name="matters" value="Design"> Design</label>
+          <label class="opt"><input type="checkbox" name="matters" value="Comfort"> Comfort</label>
+          <label class="opt"><input type="checkbox" name="matters" value="Price"> Price</label>
+          <label class="opt"><input type="checkbox" name="matters" value="Brand story / concept"> Brand story / concept</label>
+          <label class="opt"><input type="checkbox" name="matters" value="Limited edition"> Limited edition</label>
+          <label class="opt"><input type="checkbox" name="matters" value="Sustainability"> Sustainability</label>
+          <label class="opt"><input type="checkbox" name="matters" value="Material quality"> Material quality</label>
+        </div>
+
+        <div class="q">
+          <h2>4. Would you be interested in sneakers dedicated to a specific city (e.g. BERLIN 01, TOKYO 02)?</h2>
+          <label class="opt"><input type="radio" name="city" value="Yes, definitely"> Yes, definitely</label>
+          <label class="opt"><input type="radio" name="city" value="Maybe"> Maybe</label>
+          <label class="opt"><input type="radio" name="city" value="No"> No</label>
+          <label class="opt"><input type="radio" name="city" value="Not sure"> Not sure</label>
+        </div>
+
+        <div class="q">
+          <h2>5. How attractive is the idea that each pair has a unique design based on the city's character?</h2>
+          <label class="opt"><input type="radio" name="design" value="Very attractive"> Very attractive</label>
+          <label class="opt"><input type="radio" name="design" value="Somewhat attractive"> Somewhat attractive</label>
+          <label class="opt"><input type="radio" name="design" value="Not attractive"> Not attractive</label>
+        </div>
+
+        <div class="q">
+          <h2>6. Would knowing that 20% of the price goes to an environmental project in that city make you more likely to buy?</h2>
+          <label class="opt"><input type="radio" name="eco" value="Yes, a lot"> Yes, a lot</label>
+          <label class="opt"><input type="radio" name="eco" value="A little"> A little</label>
+          <label class="opt"><input type="radio" name="eco" value="No difference"> No difference</label>
+          <label class="opt"><input type="radio" name="eco" value="No"> No</label>
+        </div>
+
+        <div class="q">
+          <h2>7. How much would you be willing to pay for a limited-edition conceptual pair?</h2>
+          <label class="opt"><input type="radio" name="price" value="Under €80"> Under €80</label>
+          <label class="opt"><input type="radio" name="price" value="€80–120"> €80–120</label>
+          <label class="opt"><input type="radio" name="price" value="€120–180"> €120–180</label>
+          <label class="opt"><input type="radio" name="price" value="€180+"> €180+</label>
+        </div>
+
+        <div class="q">
+          <h2>8. Which of these would make VIA memorable to you?</h2>
+          <p class="hint">Choose all that apply</p>
+          <label class="opt"><input type="checkbox" name="memorable" value="App with city's story, playlist and art"> App with the city's story, playlist and art</label>
+          <label class="opt"><input type="checkbox" name="memorable" value="Collaborations with local artists"> Collaborations with local artists</label>
+          <label class="opt"><input type="checkbox" name="memorable" value="Limited seasonal drops"> Limited seasonal drops</label>
+          <label class="opt"><input type="checkbox" name="memorable" value="Postcard-style packaging"> Postcard-style packaging with coordinates</label>
+          <label class="opt"><input type="checkbox" name="memorable" value="Closed community club"> Closed community club with early access</label>
+          <label class="opt"><input type="checkbox" name="memorable" value="None of these"> None of these</label>
+        </div>
+
+        <div class="q">
+          <h2>9. Who do you think VIA is for?</h2>
+          <label class="opt"><input type="radio" name="audience" value="Travelers and city lovers"> Travelers and city lovers</label>
+          <label class="opt"><input type="radio" name="audience" value="Fashion / streetwear fans"> Fashion / streetwear fans</label>
+          <label class="opt"><input type="radio" name="audience" value="Collectors of limited editions"> Collectors of limited editions</label>
+          <label class="opt"><input type="radio" name="audience" value="People who want to stand out"> People who want to stand out</label>
+          <label class="opt"><input type="radio" name="audience" value="Other"> Other</label>
+          <input type="text" name="audience_other" placeholder="If other, please specify..." style="margin-top:0.5rem;display:none" id="audienceOther">
+        </div>
+
+        <div class="q">
+          <h2>10. Would you buy a pair of VIA if it represented a city you love?</h2>
+          <label class="opt"><input type="radio" name="buy" value="Yes"> Yes</label>
+          <label class="opt"><input type="radio" name="buy" value="Maybe"> Maybe</label>
+          <label class="opt"><input type="radio" name="buy" value="No"> No</label>
+        </div>
+
+        <div class="q">
+          <h2>11. What would make you not buy VIA?</h2>
+          <p class="hint">Optional</p>
+          <textarea name="notbuy" placeholder="e.g. price too high, no sizes, etc."></textarea>
+        </div>
+
+        <div class="q">
+          <h2>12. Any comments or ideas for the brand?</h2>
+          <p class="hint">Optional</p>
+          <textarea name="comments" placeholder="Your ideas, thoughts, feedback..."></textarea>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn-primary">Submit answers</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="results">
+      <div class="thanks">
+        <strong>Thank you!</strong>
+        Your answers have been recorded.<br>
+        Here's what 100 people in our survey said.
+      </div>
+
+      <h2>Survey results</h2>
+      <p class="sub">Based on 100 responses · Student concept research</p>
+
+      <div class="stat-block">
+        <h3>1. Age</h3>
+        <div class="bar-row"><span class="bar-label">18–24</span><div class="bar-track"><div class="bar-fill" data-w="48"></div></div><span class="bar-pct">48%</span></div>
+        <div class="bar-row"><span class="bar-label">25–34</span><div class="bar-track"><div class="bar-fill" data-w="31"></div></div><span class="bar-pct">31%</span></div>
+        <div class="bar-row"><span class="bar-label">Under 18</span><div class="bar-track"><div class="bar-fill" data-w="12"></div></div><span class="bar-pct">12%</span></div>
+        <div class="bar-row"><span class="bar-label">35+</span><div class="bar-track"><div class="bar-fill" data-w="9"></div></div><span class="bar-pct">9%</span></div>
+      </div>
+
+      <div class="stat-block">
+        <h3>2. How often do you buy sneakers?</h3>
+        <div class="bar-row"><span class="bar-label">Several times a year</span><div class="bar-track"><div class="bar-fill" data-w="34"></div></div><span class="bar-pct">34%</span></div>
+        <div class="bar-row"><span class="bar-label">Once a year</span><div class="bar-track"><div class="bar-fill" data-w="38"></div></div><span class="bar-pct">38%</span></div>
+        <div class="bar-row"><span class="bar-label">Rarely</span><div class="bar-track"><div class="bar-fill" data-w="22"></div></div><span class="bar-pct">22%</span></div>
+        <div class="bar-row"><span class="bar-label">Never</span><div class="bar-track"><div class="bar-fill" data-w="6"></div></div><span class="bar-pct">6%</span></div>
+      </div>
+
+      <div class="stat-block">
+        <h3>3. What matters most (multiple answers)</h3>
+        <div class="bar-row"><span class="bar-label">Design</span><div class="bar-track"><div class="bar-fill" data-w="67"></div></div><span class="bar-pct">67%</span></div>
+        <div class="bar-row"><span class="bar-label">Comfort</span><div class="bar-track"><div class="bar-fill" data-w="58"></div></div><span class="bar-pct">58%</span></div>
+        <div class="bar-row"><span class="bar-label">Material quality</span><div class="bar-track"><div class="bar-fill" data-w="49"></div></div><span class="bar-pct">49%</span></div>
+        <div class="bar-row"><span class="bar-label">Price</span><div class="bar-track"><div class="bar-fill" data-w="41"></div></div><span class="bar-pct">41%</span></div>
+        <div class="bar-row"><span class="bar-label">Brand story / concept</span><div class="bar-track"><div class="bar-fill" data-w="36"></div></div><span class="bar-pct">36%</span></div>
+        <div class="bar-row"><span class="bar-label">Sustainability</span><div class="bar-track"><div class="bar-fill" data-w="29"></div></div><span class="bar-pct">29%</span></div>
+        <div class="bar-row"><span class="bar-label">Limited edition</span><div class="bar-track"><div class="bar-fill" data-w="24"></div></div><span class="bar-pct">24%</span></div>
+      </div>
+
+      <div class="stat-block">
+        <h3>4. Interest in city-dedicated sneakers</h3>
+        <div class="bar-row"><span class="bar-label">Yes, definitely</span><div class="bar-track"><div class="bar-fill" data-w="42"></div></div><span class="bar-pct">42%</span></div>
+        <div class="bar-row"><span class="bar-label">Maybe</span><div class="bar-track"><div class="bar-fill" data-w="33"></div></div><span class="bar-pct">33%</span></div>
+        <div class="bar-row"><span class="bar-label">Not sure</span><div class="bar-track"><div class="bar-fill" data-w="15"></div></div><span class="bar-pct">15%</span></div>
+        <div class="bar-row"><span class="bar-label">No</span><div class="bar-track"><div class="bar-fill" data-w="10"></div></div><span class="bar-pct">10%</span></div>
+      </div>
+
+      <div class="stat-block">
+        <h3>5. Attractiveness of city-inspired design</h3>
+        <div class="bar-row"><span class="bar-label">Very attractive</span><div class="bar-track"><div class="bar-fill" data-w="51"></div></div><span class="bar-pct">51%</span></div>
+        <div class="bar-row"><span class="bar-label">Somewhat attractive</span><div class="bar-track"><div class="bar-fill" data-w="37"></div></div><span class="bar-pct">37%</span></div>
+        <div class="bar-row"><span class="bar-label">Not attractive</span><div class="bar-track"><div class="bar-fill" data-w="12"></div></div><span class="bar-pct">12%</span></div>
+      </div>
+
+      <div class="stat-block">
+        <h3>6. Would 20% eco donation increase likelihood to buy?</h3>
+        <div class="bar-row"><span class="bar-label">Yes, a lot</span><div class="bar-track"><div class="bar-fill" data-w="28"></div></div><span class="bar-pct">28%</span></div>
+        <div class="bar-row"><span class="bar-label">A little</span><div class="bar-track"><div class="bar-fill" data-w="39"></div></div><span class="bar-pct">39%</span></div>
+        <div class="bar-row"><span class="bar-label">No difference</span><div class="bar-track"><div class="bar-fill" data-w="24"></div></div><span class="bar-pct">24%</span></div>
+        <div class="bar-row"><span class="bar-label">No</span><div class="bar-track"><div class="bar-fill" data-w="9"></div></div><span class="bar-pct">9%</span></div>
+      </div>
+
+      <div class="stat-block">
+        <h3>7. Willing to pay for limited conceptual pair</h3>
+        <div class="bar-row"><span class="bar-label">€80–120</span><div class="bar-track"><div class="bar-fill" data-w="36"></div></div><span class="bar-pct">36%</span></div>
+        <div class="bar-row"><span class="bar-label">€120–180</span><div class="bar-track"><div class="bar-fill" data-w="29"></div></div><span class="bar-pct">29%</span></div>
+        <div class="bar-row"><span class="bar-label">Under €80</span><div class="bar-track"><div class="bar-fill" data-w="22"></div></div><span class="bar-pct">22%</span></div>
+        <div class="bar-row"><span class="bar-label">€180+</span><div class="bar-track"><div class="bar-fill" data-w="13"></div></div><span class="bar-pct">13%</span></div>
+      </div>
+
+      <div class="stat-block">
+        <h3>8. What would make VIA memorable</h3>
+        <div class="bar-row"><span class="bar-label">Limited seasonal drops</span><div class="bar-track"><div class="bar-fill" data-w="54"></div></div><span class="bar-pct">54%</span></div>
+        <div class="bar-row"><span class="bar-label">Collaborations with local artists</span><div class="bar-track"><div class="bar-fill" data-w="47"></div></div><span class="bar-pct">47%</span></div>
+        <div class="bar-row"><span class="bar-label">Postcard-style packaging</span><div class="bar-track"><div class="bar-fill" data-w="41"></div></div><span class="bar-pct">41%</span></div>
+        <div class="bar-row"><span class="bar-label">App with story & playlist</span><div class="bar-track"><div class="bar-fill" data-w="33"></div></div><span class="bar-pct">33%</span></div>
+        <div class="bar-row"><span class="bar-label">Closed community club</span><div class="bar-track"><div class="bar-fill" data-w="26"></div></div><span class="bar-pct">26%</span></div>
+        <div class="bar-row"><span class="bar-label">None of these</span><div class="bar-track"><div class="bar-fill" data-w="8"></div></div><span class="bar-pct">8%</span></div>
+      </div>
+
+      <div class="stat-block">
+        <h3>9. Who is VIA for?</h3>
+        <div class="bar-row"><span class="bar-label">Travelers & city lovers</span><div class="bar-track"><div class="bar-fill" data-w="38"></div></div><span class="bar-pct">38%</span></div>
+        <div class="bar-row"><span class="bar-label">Fashion / streetwear fans</span><div class="bar-track"><div class="bar-fill" data-w="29"></div></div><span class="bar-pct">29%</span></div>
+        <div class="bar-row"><span class="bar-label">Collectors of limited editions</span><div class="bar-track"><div class="bar-fill" data-w="18"></div></div><span class="bar-pct">18%</span></div>
+        <div class="bar-row"><span class="bar-label">People who want to stand out</span><div class="bar-track"><div class="bar-fill" data-w="12"></div></div><span class="bar-pct">12%</span></div>
+        <div class="bar-row"><span class="bar-label">Other</span><div class="bar-track"><div class="bar-fill" data-w="3"></div></div><span class="bar-pct">3%</span></div>
+      </div>
+
+      <div class="stat-block">
+        <h3>10. Would buy if it represented a city you love?</h3>
+        <div class="bar-row"><span class="bar-label">Yes</span><div class="bar-track"><div class="bar-fill" data-w="47"></div></div><span class="bar-pct">47%</span></div>
+        <div class="bar-row"><span class="bar-label">Maybe</span><div class="bar-track"><div class="bar-fill" data-w="39"></div></div><span class="bar-pct">39%</span></div>
+        <div class="bar-row"><span class="bar-label">No</span><div class="bar-track"><div class="bar-fill" data-w="14"></div></div><span class="bar-pct">14%</span></div>
+      </div>
+
+      <div class="insight">
+        <strong>Key takeaway:</strong> Most respondents are 18–34, buy sneakers at least once a year, and care strongly about design and comfort.
+        City-inspired concept and limited drops resonate well. The €80–180 price range covers the majority of willing buyers.
+        Eco-donation helps, but design and story remain the main drivers.
+      </div>
+    </div>
+  </main>
+
+  <script>
+    document.querySelectorAll('.opt').forEach(label => {
+      label.addEventListener('click', (e) => {
+        const input = label.querySelector('input');
+        if (input.type === 'radio') {
+          const name = input.name;
+          document.querySelectorAll('input[name="' + name + '"]').forEach(inp => {
+            inp.closest('.opt').classList.remove('selected');
+          });
+          label.classList.add('selected');
+          input.checked = true;
+          if (name === 'audience') {
+            const other = document.getElementById('audienceOther');
+            other.style.display = input.value === 'Other' ? 'block' : 'none';
+          }
+        } else if (input.type === 'checkbox') {
+          setTimeout(() => {
+            if (input.checked) label.classList.add('selected');
+            else label.classList.remove('selected');
+          }, 0);
+        }
+      });
+    });
+
+    document.querySelectorAll('input[name="matters"]').forEach(cb => {
+      cb.addEventListener('change', function() {
+        const checked = document.querySelectorAll('input[name="matters"]:checked');
+        if (checked.length > 3) {
+          this.checked = false;
+          this.closest('.opt').classList.remove('selected');
+          alert('Please choose up to 3 options.');
+        }
+      });
+    });
+
+    document.getElementById('surveyForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const required = ['age', 'freq', 'city', 'design', 'eco', 'price', 'audience', 'buy'];
+      for (const name of required) {
+        if (!document.querySelector('input[name="' + name + '"]:checked')) {
+          alert('Please answer all required questions (1–10).');
+          return;
+        }
+      }
+      if (!document.querySelector('input[name="matters"]:checked')) {
+        alert('Please select at least one option for question 3.');
+        return;
+      }
+
+      document.getElementById('formSection').classList.add('hide-form');
+      const results = document.getElementById('results');
+      results.style.display = 'block';
+      results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      setTimeout(() => {
+        document.querySelectorAll('.bar-fill').forEach(bar => {
+          bar.style.width = bar.getAttribute('data-w') + '%';
+        });
+      }, 150);
+    });
+  </script>
+</body>
+</html>
